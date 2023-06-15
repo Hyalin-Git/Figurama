@@ -1,0 +1,47 @@
+main {
+	.spinnerContainer {
+		position: relative;
+		top: 230px;
+		display: flex;
+		justify-content: center;
+		.ldsSpinner {
+			display: inline-block;
+
+			width: 80px;
+			height: 80px;
+			&::after {
+				content: " ";
+				display: block;
+				width: 64px;
+				height: 64px;
+				margin: 8px;
+				border-radius: 50%;
+				border: 4px solid $secondaryColor;
+				border-color: $secondaryColor transparent $secondaryColor transparent;
+				animation: lds-ring 1.2s linear infinite;
+			}
+			@keyframes lds-ring {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+		}
+	}
+	.threadContainer {
+		width: 90%;
+		margin-left: auto;
+		margin-right: auto;
+		@media screen and (max-width: 1220px) {
+			width: 90%;
+		}
+		@media screen and (max-width: 520px) {
+			width: 100%;
+		}
+		// components/rejected.scss
+		// components/products.scss
+		// components/pagination.scss
+	}
+}

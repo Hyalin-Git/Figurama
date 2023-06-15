@@ -1,0 +1,129 @@
+.link {
+	color: inherit;
+	text-decoration: inherit;
+	height: 0;
+}
+.card {
+	text-align: center;
+	position: relative;
+	max-width: 240px;
+	padding: 8px;
+	animation: CardProductAnim 150ms forwards linear;
+
+	@media screen and (max-width: 1220px) {
+		max-width: 180px;
+	}
+
+	img {
+		object-fit: cover;
+		width: 100%;
+		max-width: 240px;
+		max-height: 240px;
+		border-radius: 15px;
+		@media screen and (max-width: 1220px) {
+			max-width: 180px;
+			max-height: 180px;
+		}
+	}
+
+	.hover {
+		position: absolute;
+		width: 100%;
+		opacity: 1;
+
+		@media screen and (max-width: 525px) {
+			display: none;
+			//maybe create a mobile anim
+		}
+		&:hover {
+			animation: animSwap forwards 200ms;
+			@keyframes animSwap {
+				from {
+					transform: translate(30px, 0);
+				}
+				to {
+					opacity: 1;
+					transform: translate(0, 0);
+				}
+			}
+		}
+		&:not(:hover) {
+			animation: animSwape forwards 200ms;
+			@keyframes animSwape {
+				from {
+					opacity: 1;
+					transform: translate(0px, 0);
+				}
+				to {
+					opacity: 0;
+					transform: translate(30px, 0);
+				}
+			}
+		}
+	}
+
+	&:hover {
+		cursor: pointer;
+		button {
+			animation: AddToCartBtnAnim 300ms forwards;
+		}
+	}
+	&__title {
+		font-size: 1.2rem;
+	}
+
+	&__button {
+		background-color: $secondaryColor;
+		visibility: hidden;
+		border: none;
+		border-radius: 25px;
+		padding: 8px;
+		width: 100%;
+		max-width: 155px;
+		color: white;
+		font-weight: bold;
+		font-size: 0.9rem;
+		cursor: pointer;
+		@media screen and (max-width: 525px) {
+			visibility: visible;
+		}
+		@media screen and (max-width: 350px) {
+			font-size: 0.8rem;
+		}
+		@media screen and (max-width: 300px) {
+			font-size: 0.7rem;
+		}
+
+		&:hover {
+			scale: 1.1;
+		}
+		img {
+			width: 15px;
+			position: relative;
+			top: 2px;
+			filter: brightness(0) invert(1);
+			@media screen and (max-width: 525px) {
+				display: none;
+			}
+		}
+	}
+}
+@keyframes AddToCartBtnAnim {
+	0% {
+		opacity: 0;
+		transform: translate(0px, 30px);
+	}
+	100% {
+		opacity: 1;
+		visibility: visible;
+		transform: translate(0px, 0px);
+	}
+}
+@keyframes CardProductAnim {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

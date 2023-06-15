@@ -1,0 +1,64 @@
+.filterPanel {
+	padding-bottom: 20px;
+	border-radius: 5px;
+	background-color: lighten($color: $tertiaireColor, $amount: 60);
+	border: 1px solid lighten($color: $secondaryColor, $amount: 0);
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 27px 0px;
+	@media screen and (max-width: 1220px) {
+		flex-direction: row;
+		justify-content: space-around;
+		flex-wrap: wrap;
+	}
+	.filter-header {
+		border-radius: 4px 4px 0 0;
+		text-align: left;
+		box-sizing: content-box;
+		padding-left: 10px;
+		background-color: $primaryColor;
+		margin-bottom: 20px;
+	}
+	.searchContainer {
+		display: flex;
+		justify-content: center;
+		flex-direction: row-reverse;
+		div {
+			background-color: $primaryColor;
+			width: 35px;
+			position: relative;
+			left: -8px;
+			border-radius: 0px 8px 8px 0px;
+		}
+		.search-svg {
+			width: 20px;
+			position: relative;
+			top: 6px;
+			filter: invert(44%) sepia(30%) saturate(6796%) hue-rotate(185deg)
+				brightness(104%) contrast(102%);
+		}
+		.close-svg {
+			width: 20px;
+			position: relative;
+			top: 3px;
+			filter: invert(44%) sepia(30%) saturate(6796%) hue-rotate(185deg)
+				brightness(104%) contrast(102%);
+		}
+		input {
+			border: none;
+			border-radius: 8px;
+			padding: 5px;
+			width: 70%;
+			max-height: 20px;
+			min-height: 20px;
+			outline: none;
+			border: 2px solid $secondaryColor;
+		}
+	}
+
+	.underline {
+		@include borderColor;
+		margin: 20px 0 20px 0;
+	}
+}

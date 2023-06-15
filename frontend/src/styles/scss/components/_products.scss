@@ -1,0 +1,52 @@
+.productsContainer {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 10px;
+	justify-content: center;
+	margin-bottom: 80px;
+
+	// Filter container
+	.filterContainer {
+		min-width: 280px;
+		width: 90%;
+		grid-column-start: 1;
+		grid-column-end: 2;
+		@media screen and (max-width: 1220px) {
+			width: 100%;
+			grid-column: 1/8;
+			grid-row: 4;
+			margin-top: -30px;
+			min-width: 0;
+		}
+		// components/filter.scss
+	}
+	// Card container
+	.cardContainer {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, auto));
+		grid-column: 2 / 6;
+		column-gap: 20px;
+		position: relative;
+		top: 15px;
+		grid-row: 1;
+		margin-top: -20px;
+		color: black;
+		@media screen and (max-width: 1220px) {
+			grid-column: 1 / 8;
+			justify-content: space-between;
+			grid-template-columns: repeat(auto-fill, minmax(180px, auto));
+			grid-row: 6;
+		}
+		@media screen and (max-width: 800px) {
+			justify-content: center;
+		}
+		@media screen and (max-width: 525px) {
+			grid-template-columns: repeat(2, 1fr);
+			margin-left: auto;
+			margin-right: auto;
+			column-gap: 20px;
+		}
+
+		// components/card.scss
+	}
+}

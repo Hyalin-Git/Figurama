@@ -1,0 +1,200 @@
+$primaryColor: #303030;
+$secondaryColor: #0096ff;
+$tertiaireColor: #505050;
+
+@mixin btn {
+	max-width: 100%;
+	border-radius: 25px;
+	border: none;
+	padding: 8px;
+	font-weight: bold;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+// connection form
+@mixin form {
+	h2 {
+		margin-top: 5px;
+		text-align: left;
+		color: $secondaryColor;
+	}
+	.title-underline {
+		margin-top: -10px;
+		margin-bottom: 10px;
+		line-height: 20%;
+		border: 1px solid $tertiaireColor;
+	}
+	form {
+		input {
+			border-radius: 10px;
+			max-width: 240px;
+			width: 100%;
+			padding: 4px;
+			outline: none;
+			border: none;
+		}
+		.exc-img {
+			filter: contrast(0%);
+			width: 22px;
+			position: absolute;
+			margin-left: 5px;
+			display: none;
+		}
+		button {
+			@include btn;
+			width: 145px;
+			background-color: $secondaryColor;
+			color: white;
+		}
+		p {
+			color: $tertiaireColor;
+			filter: brightness(180%);
+			margin-top: 4px;
+			margin-bottom: 4px;
+		}
+	}
+	.button-google {
+		@include btn;
+		width: 260px;
+		background-color: white;
+		color: black;
+		line-height: 25px;
+		span {
+			display: flex;
+			justify-content: center;
+			gap: 5px;
+			.google-logo {
+				width: 25px;
+				object-fit: contain;
+			}
+		}
+	}
+	.underline {
+		margin-top: 20px;
+		margin-bottom: 10px;
+		line-height: 20%;
+		border: 1px solid $tertiaireColor;
+	}
+	h3 {
+		color: $secondaryColor;
+		&:hover {
+			text-decoration: underline;
+			cursor: pointer;
+		}
+	}
+}
+
+@mixin borderColor {
+	border: 1px solid lighten($color: $tertiaireColor, $amount: 40);
+}
+
+@mixin dropdownArrow {
+	&.up {
+		animation: dropdownUpAnim ease-out forwards 150ms;
+		@keyframes dropdownUpAnim {
+			from {
+				transform: rotate(0);
+			}
+			to {
+				transform: rotate(180deg);
+			}
+		}
+	}
+
+	&.down {
+		animation: dropdownDownAnim ease-out forwards 0ms;
+		@keyframes dropdownDownAnim {
+			from {
+				transform: rotate(180deg);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+		}
+	}
+}
+
+@mixin btnBlueToBlack {
+	@keyframes btnBlueToBlack {
+		0% {
+			background: linear-gradient(to right, $primaryColor 0%, $secondaryColor);
+		}
+		10% {
+			background: linear-gradient(to right, $primaryColor 10%, $secondaryColor);
+		}
+		20% {
+			background: linear-gradient(to right, $primaryColor 20%, $secondaryColor);
+		}
+		30% {
+			background: linear-gradient(to right, $primaryColor 30%, $secondaryColor);
+		}
+		40% {
+			background: linear-gradient(to right, $primaryColor 40%, $secondaryColor);
+		}
+		50% {
+			background: linear-gradient(to right, $primaryColor 50%, $secondaryColor);
+		}
+		60% {
+			background: linear-gradient(to right, $primaryColor 60%, $secondaryColor);
+		}
+		70% {
+			background: linear-gradient(to right, $primaryColor 70%, $secondaryColor);
+		}
+		80% {
+			background: linear-gradient(to right, $primaryColor 80%, $secondaryColor);
+		}
+		90% {
+			background: linear-gradient(to right, $primaryColor 90%, $secondaryColor);
+		}
+		100% {
+			background: linear-gradient(
+				to right,
+				$primaryColor 100%,
+				$secondaryColor
+			);
+		}
+	}
+}
+
+@mixin btnBlackToBlue {
+	@keyframes btnBlackToBlue {
+		0% {
+			background: linear-gradient(to right, $primaryColor 0%, $secondaryColor);
+		}
+		10% {
+			background: linear-gradient(to right, $primaryColor 10%, $secondaryColor);
+		}
+		20% {
+			background: linear-gradient(to right, $primaryColor 20%, $secondaryColor);
+		}
+		30% {
+			background: linear-gradient(to right, $primaryColor 30%, $secondaryColor);
+		}
+		40% {
+			background: linear-gradient(to right, $primaryColor 40%, $secondaryColor);
+		}
+		50% {
+			background: linear-gradient(to right, $primaryColor 50%, $secondaryColor);
+		}
+		60% {
+			background: linear-gradient(to right, $primaryColor 60%, $secondaryColor);
+		}
+		70% {
+			background: linear-gradient(to right, $primaryColor 70%, $secondaryColor);
+		}
+		80% {
+			background: linear-gradient(to right, $primaryColor 80%, $secondaryColor);
+		}
+		90% {
+			background: linear-gradient(to right, $primaryColor 90%, $secondaryColor);
+		}
+		100% {
+			background: linear-gradient(
+				to right,
+				$primaryColor 100%,
+				$secondaryColor
+			);
+		}
+	}
+}

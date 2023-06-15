@@ -1,0 +1,35 @@
+.search-form {
+	position: relative;
+	top: 15px;
+	display: flex;
+	justify-content: center;
+	input {
+		border: none;
+		border-radius: 8px;
+		padding: 5px;
+		max-height: 20px;
+		min-height: 20px;
+		width: 200px;
+		outline: none;
+		border: 2px solid $secondaryColor;
+		&::placeholder {
+			font-weight: bold;
+			font-size: 0.9rem;
+		}
+	}
+	button {
+		background-color: $secondaryColor;
+		cursor: pointer;
+		border: none;
+		position: relative;
+		left: -12px;
+		height: 34px;
+		border-radius: 0px 8px 8px 0px;
+		.search-svg {
+			width: 20px;
+			position: relative;
+			top: 1px;
+			filter: invert(100%);
+		}
+	}
+}

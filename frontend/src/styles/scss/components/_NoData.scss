@@ -1,0 +1,16 @@
+.no-data-container {
+	text-align: center;
+	grid-column: 2/6;
+	margin-left: 80px;
+	@media screen and (max-width: 1220px) {
+		grid-column: 1/6;
+		grid-row: 4;
+		margin-left: 0;
+	}
+	h2 {
+		color: $secondaryColor;
+	}
+	p {
+		color: black;
+	}
+}

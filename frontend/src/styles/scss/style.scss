@@ -1,0 +1,37 @@
+// Base scss
+@import "./utils/variables";
+@import "./base/app";
+
+// Header scss
+@import "./layout/header";
+@import "./components/header";
+@import "./components/searchBar";
+// Footer scss
+@import "./layout/footer";
+
+// Connection scss
+@import "./page/connection";
+@import "./components/connection/signIn";
+@import "./components/connection/signUp";
+
+// Products scss
+@import "./page/products";
+@import "./components/rejected";
+@import "./components/products";
+@import "./components/filter";
+@import "./components/dropdown";
+@import "./components/card";
+@import "./components/popUp";
+@import "./components/NoData";
+@import "./components/pagination";
+
+// Product scss
+@import "./page/product";
+@import "./components/product";
+
+// Payment scss
+@import "./page/order";
+@import "./components/order/cart";
+@import "./components/order/recap";
+@import "./components/order/orderForm";
+@import "./components/order/paymentForm";
