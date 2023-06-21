@@ -1,4 +1,4 @@
-.form-container {
+.shipping-container {
 	margin-top: 30px;
 	background-color: lighten($color: $tertiaireColor, $amount: 60);
 	border-radius: 15px;
@@ -9,7 +9,7 @@
 		opacity: 0.8;
 		background-color: lighten($color: $tertiaireColor, $amount: 55);
 
-		.form-header {
+		.shipping-header {
 			border-radius: inherit;
 			background-color: inherit;
 			margin-bottom: 0;
@@ -19,7 +19,7 @@
 		}
 	}
 
-	.form-header {
+	.shipping-header {
 		border-radius: 15px 15px 0 0;
 		background-color: $primaryColor;
 		padding-top: 5px;
@@ -44,25 +44,26 @@
 			display: inline-block;
 		}
 	}
-	.form-content {
+	.form {
 		padding: 15px;
 
-		.form {
-			background-color: lighten($color: $tertiaireColor, $amount: 59);
-			border: 1px solid $secondaryColor;
-			border-radius: 15px;
-			width: fit-content;
-			padding: 20px;
-			div {
-				display: flex;
-				justify-content: space-between;
-				&:nth-child(-n + 2) {
-					margin-bottom: 30px;
-				}
-				label {
-					margin-right: 20px;
-				}
-			}
+		margin-bottom: 20px;
+		background-color: lighten($color: $tertiaireColor, $amount: 59);
+		width: 95%;
+		margin-left: auto;
+		margin-right: auto;
+		border-radius: 15px;
+		.form-header {
+			margin-top: -20px;
+			color: $secondaryColor;
+		}
+		.header-underline {
+			margin-top: -10px;
+			margin-bottom: 10px;
+			line-height: 20%;
+			border: 1px solid #505050;
+		}
+		.form-content {
 		}
 		.form-btn {
 			margin-top: 20px;
@@ -77,12 +78,14 @@
 		}
 	}
 	.registered-container {
+		padding: 15px;
+		padding-top: 0px;
 		.registered-content {
 			background-color: lighten($color: $tertiaireColor, $amount: 59);
 			border: 1px solid $secondaryColor;
 			border-radius: 15px;
 			width: fit-content;
-			padding: 10px;
+			padding: 15px;
 		}
 		.btn-container {
 			display: flex;

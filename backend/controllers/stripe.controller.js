@@ -1,5 +1,5 @@
 const OrderModel = require("../models/Order.model");
-const userModel = require("../models/user.model");
+const UserModel = require("../models/User.model");
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config({ path: "./config/.env" });
 const stripe = require("stripe")(`${process.env.STRIPE_PRIVATE_KEY}`);
@@ -83,7 +83,7 @@ exports.paymentIntent = async (req, res, next) => {
 				res.status(500).send(err);
 			}
 			if (data) {
-				res.status(200).send({ clientSecret: data.client_secret, id: data.id });
+				res.status(200).send({ clientSecret: data.client_secret });
 			}
 		}
 	);

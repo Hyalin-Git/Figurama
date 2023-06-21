@@ -1,19 +1,23 @@
 import React from "react";
 import { sumArray } from "../../utils/sumPrice";
 import { float } from "../../utils/localString";
-import { useQuery } from "../../utils/urlQuery";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import PaymentBtn from "./PaymentBtn";
 
-const Recap = ({ userCart, validateCart }) => {
-	let query = useQuery();
-	const regex = /^(true|false)$/i;
-	const navigate = useNavigate();
+const Recap = ({
+	userData,
+	userCart,
+	setClientSecret,
+	shippingInformations,
+	paymentBtn,
+	query,
+	navigate,
+}) => {
 	const totalPrice = userCart?.data?.cart?.map((products) => {
 		return products.productId.price * products.quantity;
 	});
 
 	// move the container depending on the scroll postion
-
 	document.addEventListener("scroll", function (e) {
 		const recap = document.getElementById("recap");
 		if (recap) {
@@ -24,19 +28,42 @@ const Recap = ({ userCart, validateCart }) => {
 		}
 	});
 
-	if (!regex.test(validateCart)) {
-		query.set("validate", "true");
-		navigate(`?${query.toString()}`);
-	}
-	function validateCartFunc(e) {
+	const validateCartFunc = (e) => {
 		e.preventDefault();
 		query.set("validate", "true");
-		if (regex.test(validateCart)) {
-			navigate(`?${query.toString()}`);
-		} else {
-			query.set("validate", "true");
-			navigate(`?${query.toString()}`);
-		}
+		navigate(`?${query.toString()}`);
+		document
+			.getElementsByClassName("shipping-container")[0]
+			.classList.remove("locked");
+	};
+
+	function proceedToPayment(e) {
+		e.preventDefault();
+
+		query.set("proceed_payment", "true");
+
+		navigate(`?${query.toString()}`);
+
+		axios({
+			method: "POST",
+			url: `${process.env.REACT_APP_API_URL}/api/payment/create-payment-intent`,
+			withCredentials: true,
+			data: {
+				userId: userData?.data?._id,
+				email: userData?.data?.email,
+				items: userCart?.data?.cart,
+				address: shippingInformations.address,
+				zip: shippingInformations.zip,
+				city: shippingInformations.city,
+			},
+		})
+			.then((res) => {
+				setClientSecret(res.data.clientSecret);
+			})
+			.catch((err) => console.log(err));
+		document
+			.getElementsByClassName("payment-container")[0]
+			.classList.remove("locked");
 	}
 
 	return (
@@ -46,13 +73,13 @@ const Recap = ({ userCart, validateCart }) => {
 					<h1>Récapitulatif de la commande</h1>
 				</div>
 				<div className="recap-content">
-					{validateCart === "true" && (
+					{query.get("validate") === "true" && (
 						<div className="recap-list">
 							<h2>Votre commande : </h2>
 							<ul>
 								{userCart?.data?.cart?.map((products) => {
 									return (
-										<li>
+										<li key={products._id}>
 											- {products.productId.name}{" "}
 											<span>
 												{products.quantity > 1 ? "x" + products.quantity : null}{" "}
@@ -70,10 +97,24 @@ const Recap = ({ userCart, validateCart }) => {
 					</div>
 				</div>
 				<div className="recap-footer">
-					{validateCart !== "true" ? (
-						<button onClick={validateCartFunc}>Valider le panier</button>
+					{paymentBtn ? (
+						<PaymentBtn />
 					) : (
-						<button>Passer au paiement</button>
+						<>
+							{query.get("validate") !== "true" ? (
+								<button onClick={validateCartFunc}>Valider mon panier</button>
+							) : (
+								<>
+									{Object.keys(shippingInformations).length !== 0 ? (
+										<button onClick={proceedToPayment}>
+											Passer au paiement
+										</button>
+									) : (
+										<button className="locked">Passer au paiement</button>
+									)}
+								</>
+							)}
+						</>
 					)}
 				</div>
 			</div>

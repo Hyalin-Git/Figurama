@@ -1,11 +1,10 @@
 const OrderModel = require("../models/Order.model");
-const userModel = require("../models/user.model");
+const UserModel = require("../models/User.model");
 const { v4: uuidv4 } = require("uuid");
 
 exports.addOrder = (req, res, next) => {
 	// find the user with the given userId in the body
-	userModel
-		.findOne({ userId: req.body.user })
+	UserModel.findOne({ userId: req.body.user })
 		.then((user) => {
 			// If cart is empty this return an error
 			if (user.cart.length === 0) {

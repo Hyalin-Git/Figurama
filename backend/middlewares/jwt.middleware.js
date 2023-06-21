@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const userModel = require("../models/user.model");
+const userModel = require("../models/User.model");
 require("../middlewares/passport-google.middleware");
 
 exports.authorization = (req, res, next) => {

@@ -1,6 +1,5 @@
-const UserModel = require("../models/user.model");
+const UserModel = require("../models/User.model");
 const ProductModel = require("../models/Product.model");
-const userModel = require("../models/user.model");
 
 exports.addToCart = (req, res, next) => {
 	ProductModel.findById({ _id: req.body.productId })

@@ -1,33 +1,34 @@
-const userModel = require("../models/user.model");
+const UserModel = require("../models/User.model");
 
 exports.findAll = (req, res, next) => {
-	userModel
-		.find()
+	UserModel.find()
 		.then((data) => res.status(200).send(data))
 		.catch((err) => res.status(404).send(err));
 };
 
 exports.findOne = (req, res, next) => {
-	userModel
-		.findById({ _id: req.params.id })
+	UserModel.findById({ _id: req.params.id })
 		.then((data) => res.status(200).send(data))
 		.catch((err) => res.status(404).send(err));
 };
 
 exports.findOneAndUpdate = async (req, res, next) => {
-	await userModel
-		.findByIdAndUpdate(
-			{ _id: req.params.id },
-			// the user can change his address
-			{
-				$set: {
-					shippingAddress: req.body.shippingAddress,
+	await UserModel.findByIdAndUpdate(
+		{ _id: req.params.id },
+		// the user can change his address
+		{
+			$set: {
+				shippingAddress: {
+					address: req.body.address,
+					addressSupp: req.body.addressSupp,
+					phone: req.body.phone,
 					city: req.body.city,
 					zip: req.body.zip,
 				},
 			},
-			{ setDefaultsOnInsert: true }
-		)
+		},
+		{ setDefaultsOnInsert: true }
+	)
 		.then((data) => {
 			if (!data) {
 				return res.status(404).send({ message: "Aucun utilisateur trouvé" });
@@ -39,8 +40,7 @@ exports.findOneAndUpdate = async (req, res, next) => {
 };
 
 exports.findOneAndDelete = (req, res, next) => {
-	userModel
-		.findByIdAndDelete({ _id: req.params.id })
+	UserModel.findByIdAndDelete({ _id: req.params.id })
 		.then((data) => {
 			if (!data) {
 				return res
@@ -56,8 +56,7 @@ exports.findOneAndDelete = (req, res, next) => {
 };
 
 exports.findUserCart = (req, res, next) => {
-	userModel
-		.findById({ _id: req.params.id }, { cart: 1 })
+	UserModel.findById({ _id: req.params.id }, { cart: 1 })
 		.populate("cart.productId")
 		.exec()
 		.then((data) => res.status(200).send(data))

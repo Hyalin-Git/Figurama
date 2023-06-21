@@ -46,22 +46,39 @@ const userSchema = new mongoose.Schema(
 			],
 		},
 		shippingAddress: {
-			type: String,
-			maxlength: 50,
-			trim: true,
-			default: "",
-		},
-		city: {
-			type: String,
-			maxlength: 35,
-			trim: true,
-			default: "",
-		},
-		zip: {
-			type: String,
-			maxlength: 12,
-			trim: true,
-			default: "",
+			type: [
+				{
+					address: {
+						type: String,
+						maxlength: 50,
+						trim: true,
+						required: true,
+						default: "",
+					},
+					addressSupp: { type: String, maxlength: 50, trim: true, default: "" },
+					phone: {
+						type: String,
+						maxlength: 15,
+						trim: true,
+						required: true,
+						default: "",
+					},
+					city: {
+						type: String,
+						maxlength: 35,
+						trim: true,
+						required: true,
+						default: "",
+					},
+					zip: {
+						type: String,
+						maxlength: 12,
+						trim: true,
+						required: true,
+						default: "",
+					},
+				},
+			],
 		},
 		isAdmin: {
 			type: Boolean,

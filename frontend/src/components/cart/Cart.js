@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Cart = ({ userCart, validateCart }) => {
+const Cart = ({ userCart, query }) => {
 	return (
 		<>
 			<div className="cart-container">
@@ -10,7 +10,9 @@ const Cart = ({ userCart, validateCart }) => {
 				</div>
 				<div
 					className={
-						validateCart ? "product-container locked" : "product-container"
+						query.get("validate") === "true"
+							? "product-container locked"
+							: "product-container"
 					}>
 					{userCart?.data?.cart?.map((product, idx) => {
 						return (

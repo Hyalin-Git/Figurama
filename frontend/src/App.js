@@ -19,6 +19,7 @@ function App() {
 			withCredentials: true,
 		})
 			.then((res) => {
+				console.log(res);
 				setUid(res.data.userId);
 			})
 			.catch((err) => {
@@ -31,6 +32,7 @@ function App() {
 			withCredentials: true,
 		})
 			.then((res) => {
+				console.log(res);
 				setUid(res.data.userId);
 			})
 			.catch((err) => {
@@ -42,7 +44,6 @@ function App() {
 			dispatch(getUserCart(uid));
 		}
 	}, [dispatch, uid]);
-
 	return (
 		<div className="app">
 			<UidContext.Provider value={uid}>

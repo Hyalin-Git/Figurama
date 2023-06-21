@@ -78,28 +78,21 @@ const PaymentForm = () => {
 	};
 
 	return (
-		<form action="" onSubmit={handleSubmit}>
-			<div className="payment-form">
-				<div className="payment-header">
-					<h2>
-						<span>2</span> Paiement
-					</h2>
-				</div>
-
+		<div className="payment-form">
+			<form action="" onSubmit={handleSubmit} id="payment">
 				<PaymentElement id="payment-element" options={paymentElementOptions} />
-				<button disabled={isLoading || !stripe || !elements} id="submit">
-					<span id="button-text">
-						{isLoading ? (
-							<div className="spinner" id="spinner"></div>
-						) : (
-							"Pay now"
-						)}
-					</span>
-				</button>
+				{/* <button
+				onClick={handleSubmit}
+				disabled={isLoading || !stripe || !elements}
+				id="submit">
+				<span id="button-text">
+					{isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+				</span>
+			</button> */}
 				{/* Show any error or success messages */}
 				{message && <div id="payment-message">{message}</div>}
-			</div>
-		</form>
+			</form>
+		</div>
 	);
 };
 

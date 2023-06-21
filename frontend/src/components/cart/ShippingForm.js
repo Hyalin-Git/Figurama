@@ -1,95 +1,71 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { UidContext } from "../../utils/AppContext";
 
-const ShippingForm = ({
-	userData,
-	userCart,
-	validateCart,
-	setClientSecret,
-	setPaymentId,
-}) => {
+const ShippingForm = ({ shippingInformations, query, navigate }) => {
 	const [shipping, setShipping] = useState(false);
+
 	const [address, setAddress] = useState("");
-	const [zip, setZip] = useState("");
+	const [addressSupp, setAddressSupp] = useState("");
+	const [phone, setPhone] = useState("");
 	const [city, setCity] = useState("");
+	const [zip, setZip] = useState("");
+
 	const [modify, setModify] = useState(false);
 
-	let shippingInformations = [
-		{
-			address: userData?.data?.shippingAddress,
-			zip: userData?.data?.zip,
-			city: userData?.data?.city,
-		},
-	];
-	const addressInfo = shippingInformations[0].address;
-	const zipInfo = shippingInformations[0].zip;
-	const cityInfo = shippingInformations[0].city;
+	const uid = useContext(UidContext);
+
+	const addressRegex = /^[a-zA-Z0-9\s\-\',.#]+$/;
+	const cityRegex = /^[a-zA-Z\s\-']+$/;
+	const zipRegex = /^\d{5}$/;
+
+	const addressInfo = shippingInformations.address;
+	const zipInfo = shippingInformations.zip;
+	const cityInfo = shippingInformations.city;
 
 	useEffect(() => {
-		const paymentForm = document.getElementsByClassName("payment-container")[0];
-		if (addressInfo === "" || zipInfo === "" || cityInfo === "") {
-			paymentForm.classList.add("locked");
-			setShipping(false);
-		} else {
-			if (userCart?.data?.cart && userData?.data?.email) {
-				axios({
-					method: "POST",
-					url: `${process.env.REACT_APP_API_URL}/api/payment/create-payment-intent`,
-					withCredentials: true,
-					data: {
-						userId: userData?.data?._id,
-						email: userData?.data?.email,
-						items: userCart?.data?.cart,
-						address: addressInfo,
-						zip: zipInfo,
-						city: cityInfo,
-					},
-				})
-					.then((res) => {
-						setClientSecret(res.data.clientSecret);
-					})
-					.catch((err) => console.log(err));
-			}
+		if (Object.keys(shippingInformations).length !== 0) {
 			setShipping(true);
-			paymentForm.classList.remove("locked");
+		} else {
+			setShipping(false);
 		}
-	}, [
-		addressInfo,
-		zipInfo,
-		cityInfo,
-		userCart,
-		userData,
-		setClientSecret,
-		setPaymentId,
-	]);
+	}, [shippingInformations]);
 
 	function registerShippingAddress(e) {
 		axios({
 			method: "PUT",
-			url: `${process.env.REACT_APP_API_URL}/api/user/${userData?.data?._id}`,
+			url: `${process.env.REACT_APP_API_URL}/api/user/${uid}`,
 			withCredentials: true,
 			data: {
-				shippingAddress: address,
+				address: address,
+				addressSupp: addressSupp,
+				phone: phone,
 				city: city,
 				zip: zip,
 			},
 		})
 			.then((res) => {
+				setShipping(true);
+				window.location.reload();
 				console.log(res);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	}
-	console.log(validateCart);
+
+	function deleteShippingAddress(e) {
+		setAddress("");
+		setCity("");
+		setZip("");
+		registerShippingAddress();
+		query.delete("proceed_payment");
+		navigate(`?${query.toString()}`);
+		window.location.reload();
+	}
+
 	return (
-		<div className={validateCart ? "form-container" : "form-container locked"}>
-			<div className="form-header">
-				<h1>
-					{" "}
-					<span>1</span> Livraison
-				</h1>
-			</div>
+		<>
 			<div className="form-wrapper">
 				{shipping ? (
 					<>
@@ -162,10 +138,7 @@ const ShippingForm = ({
 									</button>
 									<button
 										onClick={(e) => {
-											setAddress("");
-											setZip("");
-											setCity("");
-											registerShippingAddress();
+											deleteShippingAddress();
 										}}>
 										Supprimer cette adresse
 									</button>
@@ -174,17 +147,18 @@ const ShippingForm = ({
 						)}
 					</>
 				) : (
-					<div className="form-content">
+					<div className="form">
 						<form
 							action=""
 							onSubmit={(e) => {
-								if (address === "" || zip === "" || city === "") {
-									return;
-								} else {
-									registerShippingAddress();
-								}
+								e.preventDefault();
+								registerShippingAddress();
 							}}>
-							<div className="form">
+							<div className="form-header">
+								<h2>Où souhaitez-vous être livré ?</h2>
+							</div>
+							<div className="header-underline"></div>
+							<div className="form-content">
 								<div>
 									<label htmlFor="address">Adresse</label>
 									<input
@@ -196,24 +170,45 @@ const ShippingForm = ({
 									/>
 								</div>
 								<div>
-									<label htmlFor="">Code Postal</label>
 									<input
 										type="text"
-										id="zip"
-										name="zip"
-										value={zip}
-										onChange={(e) => setZip(e.target.value)}
+										id="addressSupp"
+										name="addressSupp"
+										value={addressSupp}
+										onChange={(e) => setAddressSupp(e.target.value)}
 									/>
 								</div>
 								<div>
-									<label htmlFor="">Ville</label>
+									<label htmlFor="phone">Téléphone</label>
 									<input
 										type="text"
-										id="city"
-										name="city"
-										value={city}
-										onChange={(e) => setCity(e.target.value)}
+										id="phone"
+										name="phone"
+										value={phone}
+										onChange={(e) => setPhone(e.target.value)}
 									/>
+								</div>
+								<div className="cityZip-wrapper">
+									<div>
+										<label htmlFor="">Ville</label>
+										<input
+											type="text"
+											id="city"
+											name="city"
+											value={city}
+											onChange={(e) => setCity(e.target.value)}
+										/>
+									</div>
+									<div>
+										<label htmlFor="">Code Postal</label>
+										<input
+											type="text"
+											id="zip"
+											name="zip"
+											value={zip}
+											onChange={(e) => setZip(e.target.value)}
+										/>
+									</div>
 								</div>
 							</div>
 							<div className="form-btn">
@@ -223,7 +218,7 @@ const ShippingForm = ({
 					</div>
 				)}
 			</div>
-		</div>
+		</>
 	);
 };
 
