@@ -12,7 +12,7 @@ const SignIn = ({ setSignIn, setSignUp }) => {
 	};
 
 	const googleAuth = () => {
-		window.open(`${process.env.REACT_APP_API_URL}/api/auth/google`, "_self");
+		window.open(`${process.env.REACT_APP_API_URL}/api/auth/google/`, "_self");
 	};
 
 	const handleSignIn = (e) => {

@@ -4,6 +4,7 @@ main {
 		width: 90%;
 		margin-left: auto;
 		margin-right: auto;
+
 		.back-btn {
 			margin-bottom: 20px;
 			button {
@@ -20,6 +21,9 @@ main {
 			display: flex;
 			justify-content: space-between;
 			flex-wrap: wrap;
+			@media screen and (max-width: 1024px) {
+				display: block;
+			}
 			// components/cart.scss
 		}
 	}

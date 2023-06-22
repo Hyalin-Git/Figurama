@@ -14,6 +14,7 @@ const Cart = ({ userCart, query }) => {
 							? "product-container locked"
 							: "product-container"
 					}>
+					{userCart?.data?.cart.length === 0 && <h2>Votre panier est vide</h2>}
 					{userCart?.data?.cart?.map((product, idx) => {
 						return (
 							<div className="product-list" key={idx}>

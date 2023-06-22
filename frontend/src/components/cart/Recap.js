@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { sumArray } from "../../utils/sumPrice";
 import { float } from "../../utils/localString";
 import axios from "axios";
@@ -18,16 +18,36 @@ const Recap = ({
 	});
 
 	// move the container depending on the scroll postion
-	document.addEventListener("scroll", function (e) {
-		const recap = document.getElementById("recap");
-		if (recap) {
-			let scrollPostion = window.scrollY;
-			recap.style.top = scrollPostion + "px";
-		} else {
-			return;
-		}
-	});
 
+	const recap = document.getElementById("recap");
+
+	if (window.innerWidth > 1024) {
+		document.addEventListener("scroll", function (e) {
+			let scrollPostion = window.scrollY;
+
+			if (recap) {
+				recap.style.top = scrollPostion + "px";
+			} else {
+				return;
+			}
+		});
+	} else {
+		window.addEventListener("resize", function (e) {
+			if (window.innerWidth <= 1024) {
+				return;
+			} else {
+				document.addEventListener("scroll", function (e) {
+					let scrollPostion = window.scrollY;
+					console.log(scrollPostion);
+					if (recap) {
+						recap.style.top = scrollPostion + "px";
+					} else {
+						return;
+					}
+				});
+			}
+		});
+	}
 	const validateCartFunc = (e) => {
 		e.preventDefault();
 		query.set("validate", "true");
@@ -73,7 +93,8 @@ const Recap = ({
 					<h1>Récapitulatif de la commande</h1>
 				</div>
 				<div className="recap-content">
-					{query.get("validate") === "true" && (
+					{(query.get("validate") === "true") &
+						(userCart?.data?.cart.length > 0) && (
 						<div className="recap-list">
 							<h2>Votre commande : </h2>
 							<ul>
@@ -102,7 +123,12 @@ const Recap = ({
 					) : (
 						<>
 							{query.get("validate") !== "true" ? (
-								<button onClick={validateCartFunc}>Valider mon panier</button>
+								<button
+									className={userCart?.data?.cart.length === 0 ? "locked" : ""}
+									disabled={userCart?.data?.cart.length === 0}
+									onClick={validateCartFunc}>
+									Valider mon panier
+								</button>
 							) : (
 								<>
 									{Object.keys(shippingInformations).length !== 0 ? (

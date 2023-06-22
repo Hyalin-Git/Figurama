@@ -39,6 +39,15 @@ exports.findOneAndUpdate = async (req, res, next) => {
 		.catch((err) => res.status(500).send(err));
 };
 
+exports.findOneAndDeleteShippingAddress = async (req, res, next) => {
+	await UserModel.findByIdAndUpdate(
+		{ _id: req.params.id },
+		{ $set: { shippingAddress: [] } }
+	)
+		.then((data) => res.status(200).send(data))
+		.catch((err) => res.status(500).send(err));
+};
+
 exports.findOneAndDelete = (req, res, next) => {
 	UserModel.findByIdAndDelete({ _id: req.params.id })
 		.then((data) => {

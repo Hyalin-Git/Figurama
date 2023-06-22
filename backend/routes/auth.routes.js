@@ -22,6 +22,7 @@ router.get(
 		successRedirect: `${process.env.CLIENT_URL}/`,
 	})
 );
+console.log(process.env.CLIENT_URL);
 
 router.get("/login/failure", (req, res, next) => {
 	res.status(401).send({ error: true, message: "Log in failure" });

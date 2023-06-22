@@ -9,6 +9,11 @@ const upload = multer();
 router.get("/", authorization, userController.findAll);
 router.get("/:id", authorization, userController.findOne);
 router.put("/:id", authorization, userController.findOneAndUpdate);
+router.put(
+	"/delete-shipping-address/:id",
+	authorization,
+	userController.findOneAndDeleteShippingAddress
+);
 router.delete("/:id", authorization, userController.findOneAndDelete);
 
 // User cart routes

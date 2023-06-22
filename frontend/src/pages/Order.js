@@ -47,10 +47,12 @@ const Order = () => {
 				query.delete("validate");
 				navigate(`?${query.toString()}`);
 			} else {
-				// Else unlock the shipping-container
-				document
-					.getElementsByClassName("shipping-container")[0]
-					.classList.remove("locked");
+				if (userCart?.data?.cart.length > 0) {
+					// Else unlock the shipping-container
+					document
+						.getElementsByClassName("shipping-container")[0]
+						.classList.remove("locked");
+				}
 			}
 		}
 		// same logic as validate
@@ -70,7 +72,7 @@ const Order = () => {
 		if (clientSecret) {
 			setPaymentBtn(true);
 		}
-	}, [query, navigate, shippingInformations, clientSecret]);
+	}, [query, navigate, shippingInformations, clientSecret, userCart]);
 
 	const appearance = {
 		theme: "stripe",
