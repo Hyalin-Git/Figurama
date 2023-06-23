@@ -18,7 +18,7 @@ exports.authorization = (req, res, next) => {
 						console.log("decoded token: " + decodedToken.userId);
 						let user = await userModel.findById(decodedToken.userId);
 						res.locals.user = user;
-						console.log("==== Connected user ====", res.locals.user);
+						// console.log("==== Connected user ====", res.locals.user);
 						next();
 					}
 				}

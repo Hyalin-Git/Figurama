@@ -3,14 +3,7 @@ import SortList from "./SortList";
 import { useSelector } from "react-redux";
 import ResearchBar from "./ResearchBar";
 
-const FilterProducts = ({
-	universe,
-	// props for sorting
-	setSort,
-	setSortByName,
-	setSortByPrice,
-	setSortByUniverse,
-}) => {
+const FilterProducts = ({ universe }) => {
 	console.log(universe);
 	const products = useSelector((state) => state.products);
 	return (
@@ -21,13 +14,7 @@ const FilterProducts = ({
 				</h3>
 			</div>
 			{universe !== "All" && <ResearchBar />}
-
-			<SortList
-				setSort={setSort}
-				setSortByName={setSortByName}
-				setSortByPrice={setSortByPrice}
-				setSortByUniverse={setSortByUniverse}
-			/>
+			<SortList />
 		</div>
 	);
 };

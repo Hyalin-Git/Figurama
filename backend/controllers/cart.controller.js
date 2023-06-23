@@ -26,7 +26,6 @@ exports.addToCart = (req, res, next) => {
 							// if not, then push the product in the user's cart
 							UserModel.findByIdAndUpdate(
 								{ _id: req.params.id },
-
 								{
 									$push: {
 										cart: {
@@ -53,18 +52,29 @@ exports.addToCart = (req, res, next) => {
 };
 
 exports.updateCart = (req, res, next) => {
-	UserModel.findById({ _id: req.query.id }, (err, data) => {
-		const theProduct = data.cart.find((product) =>
-			product._id.equals(req.body.productId)
-		);
-		if (!theProduct) return res.status(404).send("product not found");
-		theProduct.quantity = req.body.quantity;
+	UserModel.findById({ _id: req.params.id })
+		.populate("cart.productId")
+		.exec()
+		.then((data) => {
+			const theProduct = data.cart.find((product) =>
+				product.productId.equals(req.body.productId)
+			);
 
-		return data.save((err) => {
-			if (!err) return res.status(200).send(data);
-			return res.status(500).send(err);
-		});
-	});
+			if (!theProduct) return res.status(404).send("product not found");
+			if (req.body.quantity) {
+				theProduct.quantity = req.body.quantity;
+
+				if (req.body.quantity > theProduct.productId.inStock) {
+					theProduct.quantity = theProduct.productId.inStock;
+				}
+			}
+
+			return data.save((err) => {
+				if (!err) return res.status(200).send(data);
+				return res.status(500).send(err);
+			});
+		})
+		.catch((err) => res.status(404).send(err));
 };
 
 exports.removeFromCart = (req, res, next) => {

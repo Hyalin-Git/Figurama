@@ -53,19 +53,6 @@ const TextArea = styled.textarea`
 	border-radius: 5px;
 `;
 
-const NumberContainer = styled.div`
-	input[type="number"]::-webkit-inner-spin-button,
-	input[type="number"]::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-	input {
-		text-align: center;
-		width: 35%;
-		resize: both;
-	}
-`;
-
 const Button = styled.button`
 	border-radius: 25px;
 	border: none;
@@ -228,7 +215,7 @@ const AddProduct = () => {
 								<img style={{ height: "200px" }} src={pictures} alt="preview" />
 							</div>
 						)}
-						<NumberContainer>
+						<div>
 							<label htmlFor="price">Prix</label>
 							<br />
 							<Input
@@ -249,7 +236,7 @@ const AddProduct = () => {
 								value={inStock}
 								onChange={(e) => setInStock(e.target.value)}
 							/>
-						</NumberContainer>
+						</div>
 						<br />
 						<br />
 						<Button type="submit">Ajouter ce produit</Button>

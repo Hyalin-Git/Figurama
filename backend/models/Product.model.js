@@ -4,18 +4,23 @@ const productSchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
+			required: true,
 		},
 		description: {
 			type: String,
+			required: true,
 		},
 		universe: {
 			type: [String],
+			required: true,
 		},
 		brand: {
 			type: String,
+			required: true,
 		},
 		cover: {
 			type: String,
+			required: true,
 		},
 		pictures: {
 			type: [String],
@@ -23,9 +28,11 @@ const productSchema = new mongoose.Schema(
 		price: {
 			type: Number,
 			default: 0,
+			required: true,
 		},
 		rating: {
 			type: Number,
+			required: true,
 			default: 0,
 		},
 		comments: {
@@ -41,6 +48,7 @@ const productSchema = new mongoose.Schema(
 			type: Number,
 			min: 0,
 			max: 255,
+			required: true,
 		},
 		purchasers: {
 			type: [

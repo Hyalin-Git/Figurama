@@ -1,47 +1,9 @@
 const OrderModel = require("../models/Order.model");
 const UserModel = require("../models/User.model");
+const ProductModel = require("../models/Product.model");
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config({ path: "./config/.env" });
 const stripe = require("stripe")(`${process.env.STRIPE_PRIVATE_KEY}`);
-
-exports.checkout = async (req, res, next) => {
-	await stripe.checkout.sessions.create(
-		{
-			payment_method_types: ["card"],
-			mode: "payment",
-			customer_email: req.body.email,
-			line_items: req.body.cart.map((item) => {
-				return {
-					price_data: {
-						currency: "eur",
-						product_data: {
-							name: item.productId.name,
-						},
-						unit_amount: item.productId.price,
-					},
-					quantity: item.quantity,
-				};
-			}),
-			success_url: `${process.env.CLIENT_URL}/success`,
-			cancel_url: `${process.env.CLIENT_URL}/cancel`,
-		},
-
-		(err, data) => {
-			if (err) {
-				res.status(500).send(err);
-			}
-			if (data) {
-				res.send(data);
-				console.log(data);
-				const checkout = new CheckoutTTLModel({
-					checkoutID: data.id,
-					customer_email: data.customer_email,
-				});
-				checkout.save();
-			}
-		}
-	);
-};
 
 function calculateOrderAmount(item) {
 	let total = 0;
@@ -56,15 +18,18 @@ function calculateOrderAmount(item) {
 exports.paymentIntent = async (req, res, next) => {
 	const userId = req.body.userId;
 	const address = req.body.address;
+	const addressSupp = req.body.addressSupp;
+	const phone = req.body.phone;
 	const zip = req.body.zip;
 	const city = req.body.city;
+
 	const email = req.body.email;
+
 	const items = req.body.items;
 	const itemsMap = items.map((products) => {
 		return products.productId.price * products.quantity;
 	});
-	// userId: userId,
-	// products: items,
+
 	await stripe.paymentIntents.create(
 		{
 			amount: calculateOrderAmount(itemsMap),
@@ -72,9 +37,17 @@ exports.paymentIntent = async (req, res, next) => {
 			payment_method_types: ["card"],
 			receipt_email: email,
 			metadata: {
+				products: JSON.stringify(
+					items.map((products) => {
+						return products.productId._id;
+					})
+				),
+				// user info
 				userId: userId,
-				line1: address,
-				zip_code: zip,
+				address: address,
+				addressSupp: addressSupp,
+				phone: phone,
+				zip: zip,
 				city: city,
 			},
 		},
@@ -108,7 +81,6 @@ exports.paymentWebhook = async (req, res, next) => {
 	}
 	const metadata = event.data.object.metadata;
 
-	console.log(event);
 	// Handle the event
 	switch (event.type) {
 		case "payment_intent.succeeded":
@@ -116,14 +88,58 @@ exports.paymentWebhook = async (req, res, next) => {
 			const order = new OrderModel({
 				order: uuidv4(),
 				user: metadata.userId,
-				shippingAddress: metadata.line1,
-				zip: metadata.zip_code,
-				city: metadata.city,
+				shippingAddress: {
+					address: metadata.address,
+					addressSupp: metadata.addressSupp,
+					phone: metadata.phone,
+					zip: metadata.zip,
+					city: metadata.city,
+				},
 				amount: event.data.object.amount,
 			});
 			try {
 				const savedOrder = await order.save();
-				console.log(savedOrder);
+				if (savedOrder) {
+					// Parse the metadata to able to use it
+					const products = JSON.parse(metadata.products);
+					products.map((id) => {
+						// Map through it
+						return (
+							ProductModel.findById({ _id: id })
+								// Return every selectionned product
+								.then((product) => {
+									// Check in the purchasers Array if there is already the userId
+									const thePurchaser = product.purchasers.find((purchaser) =>
+										purchaser.purchasers.equals(metadata.userId)
+									);
+									if (thePurchaser) {
+										return; // If yes we are not going any further
+									} else {
+										// Else we are pushing the userId in the purchasers Array
+										ProductModel.findByIdAndUpdate(
+											{ _id: id },
+											{
+												$push: {
+													purchasers: {
+														purchasers: metadata.userId,
+													},
+												},
+											},
+											{ new: true }
+										)
+											// .then((data) => res.status(200).send(data))
+											.catch((err) => console.log(err));
+									}
+									// Saving the product
+									return product.save((err) => {
+										if (!err) return console.log(data);
+										return console.log(err);
+									});
+								})
+								.catch((err) => console.log(err))
+						);
+					});
+				}
 			} catch (err) {
 				console.log(err);
 			}

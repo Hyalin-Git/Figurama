@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { sumArray } from "../../utils/sumPrice";
 import { float } from "../../utils/localString";
 import axios from "axios";
@@ -13,41 +13,38 @@ const Recap = ({
 	query,
 	navigate,
 }) => {
+	const [showRecap, setShowRecap] = useState(false);
+
 	const totalPrice = userCart?.data?.cart?.map((products) => {
 		return products.productId.price * products.quantity;
 	});
 
-	// move the container depending on the scroll postion
+	// Fonction pour mettre à jour la position de l'élément "recap"
+	function updateRecapPosition() {
+		let scrollPosition = window.scrollY;
+		let recap = document.getElementById("recap");
 
-	const recap = document.getElementById("recap");
-
-	if (window.innerWidth > 1024) {
-		document.addEventListener("scroll", function (e) {
-			let scrollPostion = window.scrollY;
-
-			if (recap) {
-				recap.style.top = scrollPostion + "px";
+		if (recap) {
+			if (window.innerWidth < 1024) {
+				recap.classList.add("fixed-bottom");
+				recap.style.top = ""; // Réinitialiser la position top
 			} else {
-				return;
+				recap.classList.remove("fixed-bottom");
+				recap.style.top = scrollPosition + "px";
 			}
-		});
-	} else {
-		window.addEventListener("resize", function (e) {
-			if (window.innerWidth <= 1024) {
-				return;
-			} else {
-				document.addEventListener("scroll", function (e) {
-					let scrollPostion = window.scrollY;
-					console.log(scrollPostion);
-					if (recap) {
-						recap.style.top = scrollPostion + "px";
-					} else {
-						return;
-					}
-				});
-			}
-		});
+		}
 	}
+
+	updateRecapPosition();
+
+	window.addEventListener("resize", updateRecapPosition);
+
+	document.addEventListener("scroll", updateRecapPosition);
+
+	// Listening scroll event
+
+	//  Listening resize event
+
 	const validateCartFunc = (e) => {
 		e.preventDefault();
 		query.set("validate", "true");
@@ -73,8 +70,10 @@ const Recap = ({
 				email: userData?.data?.email,
 				items: userCart?.data?.cart,
 				address: shippingInformations.address,
-				zip: shippingInformations.zip,
+				addressSupp: shippingInformations.addressSupp,
+				phone: shippingInformations.phone,
 				city: shippingInformations.city,
+				zip: shippingInformations.zip,
 			},
 		})
 			.then((res) => {
@@ -93,24 +92,61 @@ const Recap = ({
 					<h1>Récapitulatif de la commande</h1>
 				</div>
 				<div className="recap-content">
-					{(query.get("validate") === "true") &
-						(userCart?.data?.cart.length > 0) && (
-						<div className="recap-list">
-							<h2>Votre commande : </h2>
-							<ul>
-								{userCart?.data?.cart?.map((products) => {
-									return (
-										<li key={products._id}>
-											- {products.productId.name}{" "}
-											<span>
-												{products.quantity > 1 ? "x" + products.quantity : null}{" "}
-											</span>
-										</li>
-									);
-								})}
-							</ul>
+					<div className="recap-phone">
+						<div onClick={(e) => setShowRecap(!showRecap)}>
+							<img
+								className={showRecap ? "open" : "close"}
+								src="./svg/carret-down.svg"
+								alt="caret"
+							/>
 						</div>
-					)}
+						{showRecap ? (
+							<>
+								{(query.get("validate") === "true") &
+									(userCart?.data?.cart.length > 0) && (
+									<div className="recap-list">
+										<h2>Votre commande : </h2>
+										<ul>
+											{userCart?.data?.cart?.map((products) => {
+												return (
+													<li key={products._id}>
+														- {products.productId.name}{" "}
+														<span>
+															{products.quantity > 1
+																? "x" + products.quantity
+																: null}{" "}
+														</span>
+													</li>
+												);
+											})}
+										</ul>
+									</div>
+								)}
+							</>
+						) : null}
+					</div>
+					<div className="recap-desktop">
+						{(query.get("validate") === "true") &
+						(userCart?.data?.cart.length > 0) ? (
+							<div className="recap-list">
+								<h2>Votre commande : </h2>
+								<ul>
+									{userCart?.data?.cart?.map((products) => {
+										return (
+											<li key={products._id}>
+												- {products.productId.name}{" "}
+												<span>
+													{products.quantity > 1
+														? "x" + products.quantity
+														: null}{" "}
+												</span>
+											</li>
+										);
+									})}
+								</ul>
+							</div>
+						) : null}
+					</div>
 					<div>
 						<p>
 							Montant total: <span>{float(sumArray(totalPrice))}</span>{" "}

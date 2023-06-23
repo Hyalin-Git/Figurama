@@ -1,11 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 import Dropdown from "../../Dropdown";
 import { useQuery } from "../../../utils/urlQuery";
 import { useNavigate } from "react-router-dom";
 
-const Sort = ({ setSortByUniverse }) => {
+const Sort = () => {
 	let query = useQuery();
 	const navigate = useNavigate();
 

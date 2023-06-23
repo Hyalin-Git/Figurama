@@ -91,7 +91,7 @@ const Order = () => {
 					</NavLink>
 				</div>
 				<div className="order-wrapper-flex">
-					<Cart userCart={userCart} query={query} />
+					<Cart userData={userData} userCart={userCart} query={query} />
 					{clientSecret ? (
 						<Elements options={options} stripe={stripePromise}>
 							<Recap

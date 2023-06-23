@@ -21,10 +21,10 @@ router.get("/get-cart/:id", authorization, userController.findUserCart);
 router.patch(
 	"/add-to-cart/:id",
 	authorization,
-	upload.array(),
+	upload.array(), // Accept multipart/form-data
 	cartController.addToCart
 );
-router.patch("/update-cart", authorization, cartController.updateCart);
+router.patch("/update-cart/:id", authorization, cartController.updateCart);
 router.patch(
 	"/delete-cart-item/:id",
 	authorization,

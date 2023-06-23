@@ -6,9 +6,8 @@
 	background-color: lighten($color: $tertiaireColor, $amount: 60);
 	border-radius: 15px;
 	border: 1px solid lighten($color: $tertiaireColor, $amount: 40);
-	@media screen and (max-width: 1024px) {
+	&.fixed-bottom {
 		position: fixed;
-
 		z-index: 999;
 		width: 100%;
 		bottom: 0;
@@ -34,6 +33,32 @@
 	}
 	.recap-content {
 		padding: 10px;
+		.recap-phone {
+			@media screen and (min-width: 1024px) {
+				display: none;
+			}
+			img {
+				margin-bottom: -10px;
+				width: 20px;
+				filter: invert(11%) sepia(34%) saturate(0%) hue-rotate(215deg)
+					brightness(99%) contrast(80%);
+				&.open {
+					transform: rotate(180deg);
+					transition: all 250ms linear;
+					// animation: carretRotate 250ms forwards;
+				}
+				&.close {
+					transform: rotate(360deg);
+					transition: all 250ms linear;
+					// animation: carretRotateDown 250ms forwards;
+				}
+			}
+		}
+		.recap-desktop {
+			@media screen and (max-width: 1024px) {
+				display: none;
+			}
+		}
 		.recap-list {
 			h2 {
 				font-size: 1.2rem;
@@ -81,6 +106,23 @@
 				}
 			}
 		}
+	}
+}
+
+@keyframes carretRotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(180deg);
+	}
+}
+@keyframes carretRotateDown {
+	from {
+		transform: rotate(180deg);
+	}
+	to {
+		transform: rotate(360deg);
 	}
 }
 

@@ -16,7 +16,7 @@ const ShippingForm = ({ shippingInformations, query, navigate }) => {
 	const uid = useContext(UidContext);
 	const regex = {
 		addressRegex: /^\d+\s(?:[\w\s'-]+,\s)?(?:\d{5}\s)?(?:\w+[\s-]+)*\w+$/,
-		addressSuppRegex: /^$|^[a-zA-Z0-9\s'-]+$/,
+		addressSuppRegex: /^[a-zA-Z0-9\s-]*$/,
 		phoneRegex: /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/,
 		cityRegex: /^[a-zA-Z\s]{3,}$/,
 		zipRegex: /^\d{5}$/,

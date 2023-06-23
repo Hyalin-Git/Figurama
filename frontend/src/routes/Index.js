@@ -12,7 +12,6 @@ import Order from "../pages/Order";
 const Index = () => {
 	return (
 		<Routes>
-			<Route path="/" element={<Home />} />
 			<Route path="/products">
 				<Route index element={<Products />} />
 				<Route path=":id" element={<Products />} />
