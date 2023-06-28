@@ -1,11 +1,13 @@
 const router = require("express").Router();
+
 const { authorization, isAdmin } = require("../middlewares/jwt.middleware");
 const productController = require("../controllers/product.controller");
-const multer = require("../middlewares/multer.middleware");
+const multerConfig = require("../middlewares/multer.middleware");
 
 router.post(
 	"/create-product",
-	multer.fields([
+
+	multerConfig.fields([
 		{ name: "cover", maxCount: 1 },
 		{ name: "pictures", maxCount: 7 },
 	]),

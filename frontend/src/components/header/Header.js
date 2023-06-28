@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SignOut from "../auth/SignOut";
 import CartHeader from "./CartHeader";
 import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
-import { getProductsUniverse } from "../../services/actions/productUniverse.action";
+import { getProductsUniverse } from "../../services/actions/GET/productsUniverse.action";
 import HeaderSearchBar from "./HeaderSearchBar";
 
 const Header = () => {

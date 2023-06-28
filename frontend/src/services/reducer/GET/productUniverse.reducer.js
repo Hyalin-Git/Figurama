@@ -1,20 +1,20 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import {
-	getUserFetching,
-	getUserRejected,
-	getUserResolved,
-} from "../actions/GET/getUser.actions";
+	productsUniverseFetching,
+	productsUniverseRejected,
+	productsUniverseResolved,
+} from "../../actions/GET/productsUniverse.action";
 
-const baseState = {
+const initialState = {
 	status: "void",
 	data: null,
 	error: null,
 };
 
-export default createReducer(baseState, (builder) => {
+export default createReducer(initialState, (builder) => {
 	return builder
-		.addCase(getUserFetching, (draft, action) => {
+		.addCase(productsUniverseFetching, (draft, action) => {
 			if (draft.status === "void") {
 				draft.status = "pending";
 				return;
@@ -26,18 +26,21 @@ export default createReducer(baseState, (builder) => {
 			}
 			if (draft.status === "resolved") {
 				draft.status = "updating";
+				return;
 			}
 		})
-		.addCase(getUserRejected, (draft, action) => {
+		.addCase(productsUniverseRejected, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.error = action.payload;
 				draft.status = "rejected";
+				return;
 			}
 		})
-		.addCase(getUserResolved, (draft, action) => {
+		.addCase(productsUniverseResolved, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.data = action.payload;
 				draft.status = "resolved";
+				return;
 			}
 		});
 });

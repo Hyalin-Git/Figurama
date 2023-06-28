@@ -1,9 +1,11 @@
 import { createReducer } from "@reduxjs/toolkit";
+
 import {
-	addToCartFetching,
-	addToCartRejected,
-	addToCartResolved,
-} from "../actions/PATCH/addToCart.actions";
+	// ADD_PRODUCT,
+	productsFetching,
+	productsResolved,
+	productsRejected,
+} from "../../actions/GET/products.actions";
 
 const initialState = {
 	status: "void",
@@ -13,7 +15,7 @@ const initialState = {
 
 export default createReducer(initialState, (builder) => {
 	return builder
-		.addCase(addToCartFetching, (draft, action) => {
+		.addCase(productsFetching, (draft, action) => {
 			if (draft.status === "void") {
 				draft.status = "pending";
 				return;
@@ -28,14 +30,14 @@ export default createReducer(initialState, (builder) => {
 				return;
 			}
 		})
-		.addCase(addToCartRejected, (draft, action) => {
+		.addCase(productsRejected, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.error = action.payload;
 				draft.status = "rejected";
 				return;
 			}
 		})
-		.addCase(addToCartResolved, (draft, action) => {
+		.addCase(productsResolved, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.data = action.payload;
 				draft.status = "resolved";

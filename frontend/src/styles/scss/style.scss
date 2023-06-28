@@ -27,7 +27,9 @@
 
 // Product scss
 @import "./page/product";
-@import "./components/product";
+@import "./components/product/product";
+@import "./components/product/comment";
+@import "./components/product/stars";
 
 // Payment scss
 @import "./page/order";

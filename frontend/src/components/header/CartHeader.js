@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserCart } from "../../services/actions/GET/getUserCart.actions";
+import { getUserCart } from "../../services/actions/GET/userCart.actions";
 import { clearUserCart } from "../../services/actions/PATCH/clearUserCart.actions";
 import { UidContext } from "../../utils/AppContext";
 import { NavLink } from "react-router-dom";
@@ -19,7 +19,7 @@ const CartHeader = () => {
 
 	const totalPrice = userCart?.data?.cart.map((item) => {
 		// Return the price of all products * the choosen quantity
-		return item.productId.price * item.quantity;
+		return item?.productId?.price * item?.quantity;
 	});
 
 	function handleCart(e) {

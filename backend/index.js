@@ -12,8 +12,8 @@ require("./config/db");
 require("./middlewares/passport-google.middleware");
 const cors = require("cors");
 const { authorization } = require("./middlewares/jwt.middleware");
-// const multer = require("multer");
-// const upload = multer();
+const multer = require("multer");
+const upload = multer();
 const app = express();
 
 const corsOptions = {
@@ -36,7 +36,6 @@ app.use((req, res, next) => {
 });
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
-// app.use(upload.array());
 
 // auth routes
 

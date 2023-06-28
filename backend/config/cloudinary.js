@@ -1,6 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 
 // Configuration
+
 cloudinary.config({
 	cloud_name: `${process.env.CLOUDNAME}`,
 	api_key: `${process.env.APIKEY}`,

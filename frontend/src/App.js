@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import Footer from "./components/Footer";
 import Header from "./components/header/Header";
 import Index from "./routes/Index";
-import { getUser } from "./services/actions/GET/getUser.actions";
+import { getUser } from "./services/actions/GET/user.actions";
 import { UidContext } from "./utils/AppContext";
-import { getUserCart } from "./services/actions/GET/getUserCart.actions";
+import { getUserCart } from "./services/actions/GET/userCart.actions";
 
 function App() {
 	const [uid, setUid] = useState(null);

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../../services/actions/GET/getProducts.actions";
+import { getProducts } from "../../../services/actions/GET/products.actions";
 import Card from "../card/Card";
 import FilterProducts from "../filter/FilterProducts";
 import Pagination from "../filter/Pagination";

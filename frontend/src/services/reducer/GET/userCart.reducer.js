@@ -1,20 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit";
-
 import {
-	productsUniverseFetching,
-	productsUniverseRejected,
-	productsUniverseResolved,
-} from "../actions/productUniverse.action";
+	getUserCartFetching,
+	getUserCartRejected,
+	getUserCartResolved,
+} from "../../actions/GET/userCart.actions";
 
-const initialState = {
+const baseState = {
 	status: "void",
 	data: null,
 	error: null,
 };
 
-export default createReducer(initialState, (builder) => {
+export default createReducer(baseState, (builder) => {
 	return builder
-		.addCase(productsUniverseFetching, (draft, action) => {
+		.addCase(getUserCartFetching, (draft, action) => {
 			if (draft.status === "void") {
 				draft.status = "pending";
 				return;
@@ -26,21 +25,18 @@ export default createReducer(initialState, (builder) => {
 			}
 			if (draft.status === "resolved") {
 				draft.status = "updating";
-				return;
 			}
 		})
-		.addCase(productsUniverseRejected, (draft, action) => {
+		.addCase(getUserCartRejected, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.error = action.payload;
 				draft.status = "rejected";
-				return;
 			}
 		})
-		.addCase(productsUniverseResolved, (draft, action) => {
+		.addCase(getUserCartResolved, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.data = action.payload;
 				draft.status = "resolved";
-				return;
 			}
 		});
 });

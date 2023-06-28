@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "../../../services/actions/GET/getProduct.actions";
-import { getProducts } from "../../../services/actions/GET/getProducts.actions";
+import { getProduct } from "../../../services/actions/GET/product.actions";
+import { getProducts } from "../../../services/actions/GET/products.actions";
 import { float } from "../../../utils/localString";
 import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 import { UidContext } from "../../../utils/AppContext";
 import { addToCart } from "../../../services/actions/PATCH/addToCart.actions";
-import { getUserCart } from "../../../services/actions/GET/getUserCart.actions";
+import { getUserCart } from "../../../services/actions/GET/userCart.actions";
 import Comment from "./Comment";
 import Card from "../card/Card";
+import Rating from "./Rating";
 const GetProduct = () => {
 	const { id } = useParams();
 	const uid = useContext(UidContext);
@@ -22,9 +23,13 @@ const GetProduct = () => {
 	const isRejected = product.status === "rejected";
 	console.log(id);
 	let universe = product?.data?.universe[1];
+
 	useEffect(() => {
 		dispatch(getProduct(id));
-		dispatch(getProducts("", "", universe, "", "", ""));
+		setTimeout(() => {
+			dispatch(getProducts("", "", universe, "", "", ""));
+		}, 500);
+
 		setTimeout(() => {
 			if (window.location.href.includes("#details")) {
 				document.getElementById("details").className = "details-active";
@@ -142,8 +147,8 @@ const GetProduct = () => {
 									<span>{float(product?.data?.price)}</span>
 								</div>
 								<br />
-								<div>
-									<span>rating</span>
+								<div className="product-rating">
+									<Rating ratings={product?.data?.averageRating} />
 								</div>
 								<div className="product-buy">
 									<br />
@@ -221,7 +226,9 @@ const GetProduct = () => {
 								Date de mise en ligne sur Figurama : {product?.data?.createdAt}
 							</p>
 						</div>
-						<div id="comment">{/* <Comment product={product} /> */}</div>
+						<div id="comment">
+							<Comment product={product} />
+						</div>
 					</div>
 
 					<div className="recommandation">

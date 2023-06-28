@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { removeFromCart } from "../../services/actions/PATCH/removeFromCart.actions";
 import { updateCart } from "../../services/actions/PATCH/updateCart.actions";
-import { getUserCart } from "../../services/actions/GET/getUserCart.actions";
+import { getUserCart } from "../../services/actions/GET/userCart.actions";
 import { UidContext } from "../../utils/AppContext";
 
 const Cart = ({ userCart, query }) => {

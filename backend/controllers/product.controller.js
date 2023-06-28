@@ -3,45 +3,48 @@ const cloudinary = require("../config/cloudinary");
 
 exports.addOneProduct = async (req, res, next) => {
 	// stocking covers img in Cloudinary
-	let coverFile = req.files["cover"];
-	console.log(coverFile);
-	let coverPath = coverFile[0].path;
-	const uploadedCoverResponse = await cloudinary.uploader.upload(coverPath, {
-		upload_preset: "dev_preset",
-	});
-	// Stocking pictures img in cloudinary
-	let picturesFiles = req.files["pictures"];
-	console.log(picturesFiles);
-	if (picturesFiles.length > 6) {
-		return res
-			.status(500)
-			.send({ error: "Seules 6 images peuvent être sélectionné" });
-	}
-	// Map through all the selectioned pictures
-	let multiplePicturePromise = picturesFiles.map((picture) =>
-		// Call cloudinary for each picture and upload them to upload_preset
-		cloudinary.uploader.upload(picture.path, {
-			upload_preset: "dev_preset",
-		})
-	);
-	let pictureResponse = await Promise.all(multiplePicturePromise);
+	try {
+		let coverFile = req.files["cover"];
 
-	const product = new ProductModel({
-		name: req.body.name,
-		description: req.body.description,
-		universe: ["All", req.body.universe.toLowerCase()],
-		brand: req.body.brand,
-		cover: uploadedCoverResponse.url,
-		pictures: pictureResponse.map((url) => {
-			return url.url;
-		}),
-		price: req.body.price,
-		inStock: req.body.inStock,
-	});
-	product
-		.save()
-		.then((data) => res.status(201).send(data))
-		.catch((err) => res.status(500).send(err));
+		let coverPath = coverFile[0].path;
+		const uploadedCoverResponse = await cloudinary.uploader.upload(coverPath, {
+			upload_preset: "dev_preset",
+		});
+		// Stocking pictures img in cloudinary
+		let picturesFiles = req.files["pictures"];
+
+		if (picturesFiles.length > 6) {
+			return res
+				.status(500)
+				.send({ error: "Seules 6 images peuvent être sélectionné" });
+		}
+		// Map through all the selectioned pictures
+		let multiplePicturePromise = picturesFiles.map((picture) =>
+			// Call cloudinary for each picture and upload them to upload_preset
+			cloudinary.uploader.upload(picture.path, {
+				upload_preset: "dev_preset",
+			})
+		);
+		let pictureResponse = await Promise.all(multiplePicturePromise);
+		const product = new ProductModel({
+			name: req.body.name,
+			description: req.body.description,
+			universe: ["All", req.body.universe.toLowerCase()],
+			brand: req.body.brand,
+			cover: uploadedCoverResponse.url,
+			pictures: pictureResponse.map((url) => {
+				return url.url;
+			}),
+			price: req.body.price,
+			inStock: req.body.inStock,
+		});
+		product
+			.save()
+			.then((data) => res.status(201).send(data))
+			.catch((err) => res.status(500).send(err));
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 exports.getAllProduct = async (req, res, next) => {
@@ -157,20 +160,26 @@ exports.getOneProductAndDelete = (req, res, next) => {
 };
 
 exports.addComment = (req, res, next) => {
-	ProductModel.findByIdAndUpdate(
+	ProductModel.findOneAndUpdate(
 		{ _id: req.params.id },
 		{
 			$push: {
+				ratings: req.body.rating,
+
 				comments: {
 					commenterId: req.body.commenterId,
 					comment: req.body.comment,
+					rating: req.body.rating,
 					timestamp: new Date().getTime(),
 				},
 			},
 		},
 		{ new: true }
 	)
-		.then((data) => res.status(201).send(data))
+		.then((data) => {
+			data.save();
+			return res.status(201).send(data);
+		})
 		.catch((err) => res.status(500).send(err));
 };
 

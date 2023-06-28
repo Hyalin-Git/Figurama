@@ -76,6 +76,13 @@
 				color: $secondaryColor;
 			}
 		}
+		.product-rating {
+			span {
+				img {
+					width: 40px;
+				}
+			}
+		}
 		.product-buy {
 			margin-top: 20px;
 

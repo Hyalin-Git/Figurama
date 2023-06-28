@@ -39,7 +39,7 @@ exports.paymentIntent = async (req, res, next) => {
 			metadata: {
 				products: JSON.stringify(
 					items.map((products) => {
-						return products.productId._id;
+						return { id: products.productId._id, qty: products.quantity };
 					})
 				),
 				// user info
@@ -83,6 +83,18 @@ exports.paymentWebhook = async (req, res, next) => {
 
 	// Handle the event
 	switch (event.type) {
+		case "payment_intent.created":
+			// setTimeout(() => {
+			// 	stripe.paymentIntents.cancel(`${event.data.object.id}`, (err, data) => {
+			// 		if (!err) {
+			// 			console.log("Payment cancelled due to prolonged inactivity", data);
+			// 		} else {
+			// 			console.log(err);
+			// 		}
+			// 	});
+			// }, 600000);
+
+			break;
 		case "payment_intent.succeeded":
 			// Then save an order into the DB if the event payment_intent.succeeded
 			const order = new OrderModel({
@@ -102,22 +114,48 @@ exports.paymentWebhook = async (req, res, next) => {
 				if (savedOrder) {
 					// Parse the metadata to able to use it
 					const products = JSON.parse(metadata.products);
-					products.map((id) => {
+
+					products.map((product) => {
 						// Map through it
+
 						return (
-							ProductModel.findById({ _id: id })
+							ProductModel.findById({ _id: product.id })
+
 								// Return every selectionned product
-								.then((product) => {
+								.then((productData) => {
+									// Removing the purchased quantity by the user
+									ProductModel.findByIdAndUpdate(
+										{ _id: product.id },
+										{
+											$inc: {
+												inStock: -product.qty,
+											},
+										},
+
+										{ new: true, upsert: true }
+									)
+										// .then((data) => res.status(200).send(data))
+										.catch((err) => console.log(err));
+
+									// Clear the user cart
+									UserModel.findByIdAndUpdate(
+										{ _id: metadata.userId },
+										{ $set: { cart: [] } }
+									)
+										.then((data) => console.log(data))
+										.catch((err) => console.log(err));
+
 									// Check in the purchasers Array if there is already the userId
-									const thePurchaser = product.purchasers.find((purchaser) =>
-										purchaser.purchasers.equals(metadata.userId)
+									const thePurchaser = productData.purchasers.find(
+										(purchaser) => purchaser.purchasers.equals(metadata.userId)
 									);
+
 									if (thePurchaser) {
 										return; // If yes we are not going any further
 									} else {
 										// Else we are pushing the userId in the purchasers Array
 										ProductModel.findByIdAndUpdate(
-											{ _id: id },
+											{ _id: product.id },
 											{
 												$push: {
 													purchasers: {
@@ -125,11 +163,13 @@ exports.paymentWebhook = async (req, res, next) => {
 													},
 												},
 											},
+
 											{ new: true }
 										)
 											// .then((data) => res.status(200).send(data))
 											.catch((err) => console.log(err));
 									}
+
 									// Saving the product
 									return product.save((err) => {
 										if (!err) return console.log(data);

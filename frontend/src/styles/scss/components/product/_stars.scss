@@ -1,0 +1,11 @@
+.product-page {
+	.stars {
+		img {
+			filter: invert(74%);
+			&.colored {
+				filter: invert(44%) sepia(30%) saturate(6796%) hue-rotate(185deg)
+					brightness(104%) contrast(102%);
+			}
+		}
+	}
+}

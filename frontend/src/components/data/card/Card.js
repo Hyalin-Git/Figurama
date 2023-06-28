@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../../../services/actions/PATCH/addToCart.actions";
 import { float } from "../../../utils/localString";
 import { UidContext } from "../../../utils/AppContext";
-import { getUserCart } from "../../../services/actions/GET/getUserCart.actions";
+import { getUserCart } from "../../../services/actions/GET/userCart.actions";
 import PopUp from "./PopUp";
 
 const Card = ({ product }) => {

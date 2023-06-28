@@ -3,7 +3,7 @@ import {
 	productFetching,
 	productRejected,
 	productResolved,
-} from "../actions/GET/getProduct.actions";
+} from "../../actions/GET/product.actions";
 
 const initialState = {
 	status: "void",

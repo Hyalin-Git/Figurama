@@ -1,9 +1,10 @@
 import { createReducer } from "@reduxjs/toolkit";
+
 import {
-	getUserCartFetching,
-	getUserCartRejected,
-	getUserCartResolved,
-} from "../actions/GET/getUserCart.actions";
+	getUserFetching,
+	getUserRejected,
+	getUserResolved,
+} from "../../actions/GET/user.actions";
 
 const baseState = {
 	status: "void",
@@ -13,7 +14,7 @@ const baseState = {
 
 export default createReducer(baseState, (builder) => {
 	return builder
-		.addCase(getUserCartFetching, (draft, action) => {
+		.addCase(getUserFetching, (draft, action) => {
 			if (draft.status === "void") {
 				draft.status = "pending";
 				return;
@@ -27,13 +28,13 @@ export default createReducer(baseState, (builder) => {
 				draft.status = "updating";
 			}
 		})
-		.addCase(getUserCartRejected, (draft, action) => {
+		.addCase(getUserRejected, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.error = action.payload;
 				draft.status = "rejected";
 			}
 		})
-		.addCase(getUserCartResolved, (draft, action) => {
+		.addCase(getUserResolved, (draft, action) => {
 			if (draft.status === "pending" || draft.status === "updating") {
 				draft.data = action.payload;
 				draft.status = "resolved";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as palette from "../../utils/variables";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../../services/actions/GET/getProducts.actions";
+import { addProduct } from "../../services/actions/GET/products.actions";
 
 const Container = styled.div`
 	margin-left: auto;
