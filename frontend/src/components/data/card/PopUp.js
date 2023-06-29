@@ -80,7 +80,7 @@ const PopUp = ({ product, modal, setModal }) => {
 									}}>
 									Continuer mes achats
 								</button>
-								<NavLink to="/cart">
+								<NavLink to="/order">
 									<button className="btn">Aller au panier</button>
 								</NavLink>
 							</div>

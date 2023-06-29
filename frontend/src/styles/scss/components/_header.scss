@@ -338,11 +338,21 @@ nav {
 										width: 80px;
 									}
 									.product-name {
+										box-sizing: border-box;
+										width: 100%;
 										h2 {
 											font-size: 1rem;
 										}
-										span {
-											color: $secondaryColor;
+										.product-manager {
+											display: flex;
+											justify-content: space-between;
+											input {
+												width: 35px;
+											}
+											img {
+												width: 20px;
+												border: inherit;
+											}
 										}
 									}
 								}

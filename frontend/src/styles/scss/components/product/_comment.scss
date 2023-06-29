@@ -9,6 +9,7 @@
 			padding-left: 40px;
 			padding-right: 40px;
 			border-radius: 15px;
+
 			&:not(:last-child) {
 				margin-bottom: 10px;
 			}
@@ -22,11 +23,36 @@
 				}
 				.header-right {
 					align-self: center;
-					position: relative;
-					bottom: 20px;
+
 					span {
 						font-weight: 600;
 					}
+				}
+			}
+			.comment-content {
+				display: flex;
+				justify-content: space-between;
+				.message {
+					max-width: 1200px;
+					width: 100%;
+
+					.edit-comment {
+						padding: 15px;
+
+						textarea {
+							max-width: 1200px;
+							width: 100%;
+							border-radius: 8px;
+							outline: none;
+							border: none;
+							padding: 5px;
+							resize: none;
+						}
+					}
+				}
+				.comment-manager {
+					display: flex;
+					gap: 10px;
 				}
 			}
 		}
@@ -34,6 +60,10 @@
 		// comment form
 
 		.comment-form {
+			padding: 20px;
+			background-color: lighten($color: $tertiaireColor, $amount: 60);
+
+			border-radius: 15px;
 			h1 {
 				margin-top: 0;
 				padding-top: 0;
@@ -42,13 +72,51 @@
 			margin-bottom: 40px;
 			.rating {
 				.rating-input {
+					margin-top: 10px;
 					span {
 						img {
 							width: 30px;
 						}
 					}
 				}
+				margin-bottom: 20px;
+			}
+			.comment-input {
+				textarea {
+					margin-top: 5px;
+					resize: none;
+					border-radius: 15px;
+					max-width: 800px;
+					width: 100%;
+					padding: 10px;
+					border: none;
+				}
+				margin-bottom: 20px;
+			}
+			.comment-button {
+				display: flex;
+				justify-content: space-evenly;
+			}
+		}
+		button {
+			@include btn;
+			background-color: $secondaryColor;
+			color: white;
+			animation: btnBlackToBlue 150ms reverse;
+			&:hover {
+				animation: btnBlueToBlack 150ms forwards;
 			}
 		}
 	}
 }
+.comment-underline {
+	border: 1px solid #d0d0d0;
+	margin-top: -20px;
+	margin-bottom: 20px;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@include btnBlueToBlack;
+@include btnBlackToBlue;

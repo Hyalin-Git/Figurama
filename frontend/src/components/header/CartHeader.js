@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserCart } from "../../services/actions/GET/userCart.actions";
 import { clearUserCart } from "../../services/actions/PATCH/clearUserCart.actions";
+import { updateCart } from "../../services/actions/PATCH/updateCart.actions";
+import { removeFromCart } from "../../services/actions/PATCH/removeFromCart.actions";
 import { UidContext } from "../../utils/AppContext";
 import { NavLink } from "react-router-dom";
 import { float } from "../../utils/localString";
@@ -34,6 +36,35 @@ const CartHeader = () => {
 		dispatch(getUserCart(uid));
 	}
 
+	function handleQty(productId, productInStock) {
+		const inputs = document.getElementsByClassName("quantity");
+		const input = Array.from(inputs).find(
+			(input) => input.dataset.productid === productId
+		);
+
+		// Cannot exceed 10
+		if (input?.value === "0") {
+			input.value = 1;
+		}
+		if (input?.value > 10) {
+			input.value = 10;
+		}
+		// Cannot exceed the number of products in stock
+		if (input?.value > 10 || input?.value > productInStock) {
+			input.value = productInStock;
+		}
+
+		dispatch(updateCart(uid, productId, input?.value)).then(() =>
+			dispatch(getUserCart(uid))
+		);
+	}
+
+	function handleDelete(productId) {
+		dispatch(removeFromCart(uid, productId)).then(() =>
+			dispatch(getUserCart(uid))
+		);
+	}
+
 	return (
 		<div className="cart-container">
 			<div className="cart" onClick={handleCart}>
@@ -52,7 +83,30 @@ const CartHeader = () => {
 											</NavLink>
 											<div className="product-name">
 												<h2>{product?.productId?.name}</h2>
-												<span>x{product?.quantity}</span>
+												<div className="product-manager">
+													<input
+														className="quantity"
+														data-productid={product?.productId?._id}
+														type="number"
+														min="1"
+														max="10"
+														defaultValue={product?.quantity}
+														onChange={(e) => {
+															handleQty(product?.productId?._id);
+														}}
+													/>
+													<img
+														onClick={(e) => {
+															e.preventDefault();
+															handleDelete(
+																product?.productId?._id,
+																product?.productId?.inStock
+															);
+														}}
+														src="./svg/trash.svg"
+														alt="delete"
+													/>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -71,7 +125,9 @@ const CartHeader = () => {
 								</p>
 							</div>
 							<div className="btn">
-								<button>Mon panier</button>
+								<NavLink to="/order">
+									<button>Mon panier</button>
+								</NavLink>
 								<button onClick={clearCart}>Vider le panier</button>
 							</div>
 						</div>

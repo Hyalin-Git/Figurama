@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { removeFromCart } from "../../services/actions/PATCH/removeFromCart.actions";
 import { updateCart } from "../../services/actions/PATCH/updateCart.actions";

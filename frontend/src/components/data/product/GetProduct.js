@@ -8,7 +8,7 @@ import { capitalizeFirstLetter } from "../../../utils/capitalizeFirstLetter";
 import { UidContext } from "../../../utils/AppContext";
 import { addToCart } from "../../../services/actions/PATCH/addToCart.actions";
 import { getUserCart } from "../../../services/actions/GET/userCart.actions";
-import Comment from "./Comment";
+import Comment from "./comments/Comment";
 import Card from "../card/Card";
 import Rating from "./Rating";
 const GetProduct = () => {
@@ -21,7 +21,7 @@ const GetProduct = () => {
 	const user = useSelector((state) => state.user);
 	const isLoading = product.status === "pending" || product.status === "void";
 	const isRejected = product.status === "rejected";
-	console.log(id);
+
 	let universe = product?.data?.universe[1];
 
 	useEffect(() => {
@@ -32,13 +32,13 @@ const GetProduct = () => {
 
 		setTimeout(() => {
 			if (window.location.href.includes("#details")) {
-				document.getElementById("details").className = "details-active";
+				document.getElementById("details-product").className = "details-active";
 				document
 					.getElementsByClassName("details-title")[0]
 					.classList.add("selected");
 			}
 			if (window.location.href.includes("#comment")) {
-				document.getElementById("comment").className = "comment-active";
+				document.getElementById("comment-product").className = "comment-active";
 				document
 					.getElementsByClassName("comment-title")[0]
 					.classList.add("selected");
@@ -184,10 +184,10 @@ const GetProduct = () => {
 											.getElementsByClassName("comment-title")[0]
 											.classList.remove("selected");
 										// show / hide the selected content
-										document.getElementById("details").className =
+										document.getElementById("details-product").className =
 											"details-active";
 										document
-											.getElementById("comment")
+											.getElementById("comment-product")
 											.classList.remove("comment-active");
 									}}>
 									Détails du produit
@@ -203,17 +203,17 @@ const GetProduct = () => {
 											.getElementsByClassName("details-title")[0]
 											.classList.remove("selected");
 										// show / hide the selected content
-										document.getElementById("comment").className =
+										document.getElementById("comment-product").className =
 											"comment-active";
 										document
-											.getElementById("details")
+											.getElementById("details-product")
 											.classList.remove("details-active");
 									}}>
 									Avis
 								</h2>
 							</div>
 						</div>
-						<div id="details">
+						<div id="details-product">
 							<h3>{product?.data?.name}</h3>
 							<p>Marque : {product?.data?.brand}</p>
 							<p>
@@ -226,7 +226,7 @@ const GetProduct = () => {
 								Date de mise en ligne sur Figurama : {product?.data?.createdAt}
 							</p>
 						</div>
-						<div id="comment">
+						<div id="comment-product">
 							<Comment product={product} />
 						</div>
 					</div>

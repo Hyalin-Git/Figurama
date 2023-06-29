@@ -187,24 +187,27 @@ const Header = () => {
 											</div>
 										)}
 									</li>
+									<li></li>
+									<li>
+										<img width="25px" src="./svg/cart.svg" alt="cart" />
+									</li>
 								</>
 							) : (
-								<li>
-									{" "}
-									<NavLink
-										className="link"
-										style={({ isActive }) =>
-											isActive ? activeLink : undefined
-										}
-										to={"/auth"}>
-										S'identifier
-									</NavLink>
-								</li>
+								<>
+									<li>
+										{" "}
+										<NavLink
+											className="link"
+											style={({ isActive }) =>
+												isActive ? activeLink : undefined
+											}
+											to={"/auth"}>
+											S'identifier
+										</NavLink>
+									</li>
+								</>
 							)}
-							<li></li>
-							<li>
-								<img width="25px" src="./svg/cart.svg" alt="cart" />
-							</li>
+
 							{user.status === "resolved" && <CartHeader />}
 						</ul>
 					</div>
