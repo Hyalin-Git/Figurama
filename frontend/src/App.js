@@ -47,8 +47,10 @@ function App() {
 	return (
 		<div className="app">
 			<UidContext.Provider value={uid}>
-				<Header />
-				<Index />
+				<div className="container">
+					<Header />
+					<Index />
+				</div>
 				<Footer />
 			</UidContext.Provider>
 		</div>

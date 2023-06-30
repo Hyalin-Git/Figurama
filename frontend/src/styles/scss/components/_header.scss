@@ -2,13 +2,18 @@ nav {
 	.header-left {
 		display: flex;
 		justify-content: space-between;
-		width: 40%;
+		width: 100%;
+		max-width: 250px;
+		@media screen and (max-width: 981px) {
+			align-self: flex-start;
+		}
 
 		.logo {
 			padding-left: 20px;
 			display: flex;
 			justify-content: space-around;
 			gap: 15px;
+			margin-right: 20px;
 			span {
 				color: white;
 			}
@@ -34,9 +39,8 @@ nav {
 			display: flex;
 			justify-content: space-evenly;
 			min-width: 200px;
-			position: relative;
 			z-index: 1;
-			top: 10px;
+			align-self: center;
 			font-size: 0.9rem;
 			border-radius: 4px;
 			height: min-content;
@@ -44,9 +48,17 @@ nav {
 			font-weight: bold;
 			cursor: pointer;
 			background-color: $secondaryColor;
+			@media screen and (max-width: 981px) {
+				display: none;
+			}
+			.menu-button {
+				display: flex;
+				justify-content: space-between;
+				gap: 20px;
+			}
 
 			.line-container {
-				margin-top: 15px;
+				align-self: center;
 			}
 
 			.line1 {
@@ -113,7 +125,11 @@ nav {
 						width: 10px;
 						filter: brightness(0);
 					}
+
 					.dropdown-item {
+						.close-dropdown {
+							display: none;
+						}
 						position: absolute;
 						background-color: lighten($color: $tertiaireColor, $amount: 60);
 						border: 1px solid lighten($color: $tertiaireColor, $amount: 40);
@@ -158,7 +174,7 @@ nav {
 		&:active {
 			background-color: $tertiaireColor;
 		}
-		@media (min-width: 681px) {
+		@media (min-width: 981px) {
 			display: none;
 		}
 		.btn1,
@@ -256,7 +272,7 @@ nav {
 				text-decoration: none;
 				color: inherit;
 			}
-			img {
+			.cart-icon {
 				filter: invert(44%) sepia(30%) saturate(6796%) hue-rotate(185deg)
 					brightness(104%) contrast(102%);
 			}
@@ -266,7 +282,7 @@ nav {
 	.desktop-nav {
 		ul {
 			padding-right: 20px;
-			@media screen and (max-width: 680px) {
+			@media screen and (max-width: 981px) {
 				display: none;
 			}
 			@media screen and (max-width: 980px) {
@@ -276,6 +292,9 @@ nav {
 				}
 			}
 			.cart-container {
+				img {
+					margin-right: 15px;
+				}
 				.cart {
 					display: inline-block;
 					margin-left: -14px;
@@ -297,6 +316,7 @@ nav {
 						padding-top: 100%;
 						height: 0;
 					}
+
 					span {
 						display: inline-block;
 						vertical-align: middle;
@@ -450,33 +470,283 @@ nav {
 		margin-top: 5.9em;
 		border-top: 2px solid $tertiaireColor;
 		right: 0;
-		top: 0;
+		top: 0px;
 		bottom: 0;
 		width: 20%;
-		min-width: 180px;
+		min-width: 220px;
 		z-index: 2;
 		background-color: $primaryColor;
 		animation: sideBarOpenAnim forwards 180ms;
 
+		.cart-container {
+			position: absolute;
+			right: 20px;
+			top: 25px;
+			img {
+				margin-right: 15px;
+			}
+			.cart {
+				display: inline-block;
+				margin-left: -14px;
+				margin-top: 9px;
+				border-radius: 50%;
+				min-width: 20px;
+				min-height: 20px;
+				padding: 2px;
+				background: $secondaryColor;
+				text-align: center;
+				line-height: 1;
+				box-sizing: content-box;
+				white-space: nowrap;
+
+				&::before {
+					content: "";
+					display: inline-block;
+					vertical-align: middle;
+					padding-top: 100%;
+					height: 0;
+				}
+
+				span {
+					display: inline-block;
+					vertical-align: middle;
+					font-weight: 500;
+					color: white;
+					font-size: 0.8rem;
+					user-select: none;
+				}
+			}
+			.cart-dropdown {
+				position: fixed;
+				z-index: 1;
+				top: 90px;
+				right: 0px;
+				background-color: lighten($color: $tertiaireColor, $amount: 60);
+				border: 1px solid lighten($color: $tertiaireColor, $amount: 40);
+				border-radius: 20px;
+				min-width: 250px;
+				width: 100%;
+
+				font-size: 1rem;
+				padding: 10px;
+				.cart-scroll {
+					overflow-y: scroll;
+					overflow-x: hidden;
+					height: 300px;
+
+					.product-container {
+						margin: 4px;
+						padding: 0;
+						display: flex;
+						flex-direction: column;
+						.product-list {
+							min-width: 260px;
+							width: 100%;
+							.product-header {
+								display: flex;
+								gap: 10px;
+								img {
+									border: 1px solid $tertiaireColor;
+									width: 80px;
+								}
+								.product-name {
+									box-sizing: border-box;
+									width: 100%;
+									h2 {
+										font-size: 1rem;
+									}
+									.product-manager {
+										display: flex;
+										justify-content: space-between;
+										input {
+											width: 35px;
+										}
+										img {
+											width: 20px;
+											border: inherit;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				.product-binding {
+					margin-top: 10px;
+
+					border-top: 1px solid lighten($color: $tertiaireColor, $amount: 40);
+					text-align: left;
+					p {
+						margin-top: 10px;
+						color: black;
+					}
+					span {
+						color: $secondaryColor;
+					}
+					.btn {
+						margin-top: 10px;
+						display: flex;
+						justify-content: space-evenly;
+						button {
+							@include btn;
+							background-color: $secondaryColor;
+							border-radius: 4px;
+						}
+					}
+				}
+			}
+		}
+
 		ul {
 			display: flex;
-			flex-direction: column-reverse;
+			flex-direction: column;
 			text-align: left;
 			padding-left: 10px;
 
 			li {
 				font-size: 1rem;
+				width: max-content;
 			}
-			img {
-				float: left;
-				width: 0px;
-				margin-right: 10px;
-			}
+
 			p {
 				font-size: 0.9rem;
 				margin: 0;
 				padding-left: 10px;
 			}
+		}
+		.menu-wrapper {
+			display: flex;
+			justify-content: space-evenly;
+			flex-direction: column;
+			min-width: 200px;
+			max-width: 150px;
+			margin-top: 10px;
+			margin-left: auto;
+			margin-right: auto;
+			font-size: 0.9rem;
+			border-radius: 4px;
+			color: white;
+			font-weight: bold;
+			cursor: pointer;
+			background-color: $secondaryColor;
+			.menu-button {
+				display: flex;
+				justify-content: space-evenly;
+			}
+			.line-container {
+				align-self: center;
+			}
+
+			.line1 {
+				border: 1px solid white;
+				margin-bottom: 5px;
+				width: 20px;
+			}
+			.line2 {
+				border: 1px solid white;
+				margin-bottom: 5px;
+				width: 15px;
+			}
+			.line3 {
+				border: 1px solid white;
+				width: 10px;
+			}
+			&:hover {
+				.line1 {
+					border: 1px solid $tertiaireColor;
+					transition: all 150ms ease-in;
+				}
+				.line2 {
+					border: 1px solid $tertiaireColor;
+					transition: all 150ms ease-in;
+				}
+				.line3 {
+					border: 1px solid $tertiaireColor;
+					transition: all 150ms ease-in;
+				}
+			}
+		}
+		.menu-selection {
+			display: block;
+			background-color: lighten($color: $tertiaireColor, $amount: 60);
+			border-radius: 0 0 4px 4px;
+			min-width: 200px;
+			box-sizing: content-box;
+			padding: 0;
+			margin: 0;
+			top: 72px;
+			z-index: 0;
+			text-align: center;
+
+			li {
+				width: inherit;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				color: black;
+				font-weight: 700;
+				font-size: 0.9rem;
+				padding-top: 15px;
+				padding-bottom: 15px;
+				border-bottom: 1px solid lighten($color: $tertiaireColor, $amount: 40);
+				&:last-child {
+					border: none;
+				}
+				span {
+					width: 100%;
+				}
+				img {
+					display: none;
+				}
+			}
+
+			.dropdown-item {
+				.close-dropdown {
+					display: flex;
+					justify-content: center;
+					.close {
+						display: block;
+						width: 20px;
+					}
+				}
+				background-color: lighten($color: $tertiaireColor, $amount: 60);
+				border: 1px solid lighten($color: $tertiaireColor, $amount: 40);
+				position: absolute;
+				z-index: 999;
+				margin: auto;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				padding-top: 15px;
+				padding-bottom: 15px;
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				font-size: 0.9rem;
+				gap: 30px;
+				overflow-y: auto;
+				div {
+					p {
+						text-align: center;
+						&:hover {
+							text-decoration: underline;
+						}
+						&::first-letter {
+							color: $secondaryColor;
+							padding-right: 1px;
+							font-size: 1rem;
+						}
+					}
+				}
+			}
+		}
+		.search-form {
+			min-width: 200px;
+			max-width: 150px;
+			margin-top: 10px;
+			margin-left: auto;
+			margin-right: auto;
 		}
 
 		@keyframes sideBarOpenAnim {

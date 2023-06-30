@@ -67,8 +67,16 @@ const CartHeader = () => {
 
 	return (
 		<div className="cart-container">
-			<div className="cart" onClick={handleCart}>
-				<span>{sumArray(totalProduct)}</span>
+			<div onClick={handleCart} className="cart-button">
+				<img
+					className="cart-icon"
+					width="25px"
+					src="./svg/cart.svg"
+					alt="cart"
+				/>
+				<div className="cart">
+					<span>{sumArray(totalProduct)}</span>
+				</div>
 			</div>
 			{openCart ? (
 				<div className="cart-dropdown" onMouseLeave={handleCart}>

@@ -1,8 +1,9 @@
 .search-form {
-	position: relative;
-	top: 15px;
 	display: flex;
 	justify-content: center;
+	margin-left: 20px;
+	align-self: center;
+
 	input {
 		border: none;
 		border-radius: 8px;
@@ -24,12 +25,25 @@
 		position: relative;
 		left: -12px;
 		height: 34px;
+		z-index: 1;
 		border-radius: 0px 8px 8px 0px;
+		@media screen and (max-width: 981px) {
+			display: none;
+		}
 		.search-svg {
 			width: 20px;
 			position: relative;
+
 			top: 1px;
 			filter: invert(100%);
+		}
+	}
+}
+
+.header-left {
+	.search-form {
+		@media screen and (max-width: 981px) {
+			display: none;
 		}
 	}
 }

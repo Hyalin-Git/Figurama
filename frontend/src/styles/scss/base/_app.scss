@@ -24,4 +24,9 @@ main
 	max-width: 100%;
 	color: white;
 	font-family: "Raleway", sans-serif;
+	.container {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
 }
